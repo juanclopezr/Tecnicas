@@ -3,12 +3,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 r = 1.
+inner = 0.5
 
 cells = np.array([])
-cells = np.append(cells,[hexagon.Hexagon(np.array([0.,0.]),r)])
+cells = np.append(cells,[hexagon.Hexagon(np.array([0.,0.]),r,1,4,0,inner)])
 
-points = np.array([[2,2],[-2,2],[0,2]])
-a=0
+points = np.array([[2,2],[0,2],[-2,2],[-2,0],[-2,-2]])
+index = 1
 
 
 listing = np.array([[0,0],[0,0]])
@@ -22,8 +23,10 @@ while(doing):
         for p in listing:
             if(np.array_equal(k,p)):
                 there = True
+                print(k,p)
         if(not there):
             doing = True
+            print('in?')
             distance = 1e6
             cell = np.NaN
             for j in range(cells.shape[0]):
@@ -43,14 +46,21 @@ while(doing):
                     if(cells[i].exists(origin)):
                         temp = True
                 if((not temp)):
-                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
+                    outer_band = 0
+                    if(cells[cell].outer_band==1):
+                        outer_band = 2
+                    elif(cells[cell].outer_band==2):
+                        outer_band = 3
+                    else:
+                        outer_band = 1
+                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r,outer_band,4,index,inner)]])
+                    index += 1
                     if(cells[-1].inpoly(k)):
                         if(listing.ndim==2):
                             listing = np.concatenate([listing,[k]])
                         elif(listing.shape[0]==0):
                             listing = k
                         else:
-                            print('here')
                             listing = np.concatenate([[listing],[k]])
             elif((clos[0]==2 and clos[1]==1) or (clos[0]==1 and clos[1]==2)):
                 origin = np.array([0,2*r*np.sin(np.pi/3.)])+cells[cell].origin
@@ -59,7 +69,15 @@ while(doing):
                     if(i.exists(origin)):
                         temp = True
                 if(not temp):
-                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
+                    outer_band = 0
+                    if(cells[cell].outer_band==1):
+                        outer_band = 3
+                    elif(cells[cell].outer_band==2):
+                        outer_band = 1
+                    else:
+                        outer_band = 2
+                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r,outer_band,4,index,inner)]])
+                    index += 1
                     if(cells[-1].inpoly(k)):
                         if(listing.ndim==2):
                             listing = np.concatenate([listing,[k]])
@@ -74,7 +92,15 @@ while(doing):
                     if(cells[i].exists(origin)):
                         temp = True
                 if(not temp):
-                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
+                    outer_band = 0
+                    if(cells[cell].outer_band==1):
+                        outer_band = 2
+                    elif(cells[cell].outer_band==2):
+                        outer_band = 3
+                    else:
+                        outer_band = 1
+                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r,outer_band,4,index,inner)]])
+                    index += 1
                     if(cells[-1].inpoly(k)):
                         if(listing.ndim==2):
                             listing = np.concatenate([listing,[k]])
@@ -89,7 +115,15 @@ while(doing):
                     if(i.exists(origin)):
                         temp = True
                 if(not temp):
-                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
+                    outer_band = 0
+                    if(cells[cell].outer_band==1):
+                        outer_band = 3
+                    elif(cells[cell].outer_band==2):
+                        outer_band = 1
+                    else:
+                        outer_band = 2
+                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r,outer_band,4,index,inner)]])
+                    index += 1
                     if(cells[-1].inpoly(k)):
                         if(listing.ndim==2):
                             listing = np.concatenate([listing,[k]])
@@ -104,7 +138,15 @@ while(doing):
                     if(i.exists(origin)):
                         temp = True
                 if(not temp):
-                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
+                    outer_band = 0
+                    if(cells[cell].outer_band==1):
+                        outer_band = 2
+                    elif(cells[cell].outer_band==2):
+                        outer_band = 3
+                    else:
+                        outer_band = 1
+                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r,outer_band,4,index,inner)]])
+                    index += 1
                     if(cells[-1].inpoly(k)):
                         if(listing.ndim==2):
                             listing = np.concatenate([listing,[k]])
@@ -119,7 +161,15 @@ while(doing):
                     if(i.exists(origin)):
                         temp = True
                 if(not temp):
-                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
+                    outer_band = 0
+                    if(cells[cell].outer_band==1):
+                        outer_band = 3
+                    elif(cells[cell].outer_band==2):
+                        outer_band = 1
+                    else:
+                        outer_band = 2
+                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r,outer_band,4,index,inner)]])
+                    index += 1
                     if(cells[-1].inpoly(k)):
                         if(listing.ndim==2):
                             listing = np.concatenate([listing,[k]])
@@ -127,7 +177,9 @@ while(doing):
                             listing = k
                         else:
                             listing = np.concatenate([[listing],[k]])
-    a+=1
+    print(index,cells[-1].origin,k,listing)
+
+#x = np.random.random(
         
 plt.plot(cells[1].corners[0],cells[1].corners[1])
 plt.plot(cells[0].corners[0],cells[0].corners[1])
