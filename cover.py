@@ -1,6 +1,7 @@
 import hexagon
 import matplotlib.pyplot as plt
 import numpy as np
+import user
 
 r = 1.
 inner = 0.5
@@ -8,7 +9,7 @@ inner = 0.5
 cells = np.array([])
 cells = np.append(cells,[hexagon.Hexagon(np.array([0.,0.]),r,1,4,0,inner)])
 
-points = np.array([[2,2],[0,2],[-2,2],[-2,0],[-2,-2],[0,-2],[2,-2],[2.1,0]])
+points = np.array([[2,2],[1.5,2],[1,2],[0.5,2],[0,2],[-0.5,2],[-1,2],[-1.5,2],[-2,2],[-2.2,1.3],[-2.1,0],[-2,-0.7],[-2,-2],[0,-2],[2,-2],[2,-0.1],[2.1,0]])
 index = 1
 
 
@@ -157,21 +158,58 @@ while(doing):
 
 print(cells.shape)
 
-#x = np.random.random(
+distr = np.random.random((1000,2))*8-4
+
+users = np.array([])
+serviced = np.array([[0,0],[0,0]])
+SINR = np.array([])
+
+for i in distr:
+    distancep = 0
+    gp = 0
+    hp = 0
+    distance = 0
+    g = 0
+    h = 0
+    added = False
+    rec = 0
+    for j in cells:
+        if(j.inpoly(i)):
+            distancep = j.distance(i)
+            if(distancep<inner):
+                users = np.append(users,[user.User(i,j.ide,j.inner_band)])
+            else:
+                users = np.append(users,[user.User(i,j.ide,j.outer_band)])
+            gp = distancep**(-2.)
+            hp = 1.5*np.exp(1.5*distancep)
+            serviced = np.concatenate([serviced,[i]])
+            added = True
+        else:
+            distance = j.distance(i)
+            g = distance**(-2)
+            h = 1.5*np.exp(1.5*distance)
+
+print(users.shape)
+
+
         
-plt.plot(cells[1].corners[0],cells[1].corners[1])
-plt.plot(cells[0].corners[0],cells[0].corners[1])
-plt.plot(cells[2].corners[0],cells[2].corners[1])
-plt.plot(cells[3].corners[0],cells[3].corners[1])
-plt.plot(cells[4].corners[0],cells[4].corners[1])
-plt.plot(cells[5].corners[0],cells[5].corners[1])
-plt.plot(cells[6].corners[0],cells[6].corners[1])
-plt.plot(cells[7].corners[0],cells[7].corners[1])
-plt.plot(cells[8].corners[0],cells[8].corners[1])
-plt.plot(cells[9].corners[0],cells[9].corners[1])
+plt.fill(cells[1].corners[0],cells[1].corners[1],fill=False)
+plt.fill(cells[0].corners[0],cells[0].corners[1],fill=False)
+plt.fill(cells[2].corners[0],cells[2].corners[1],fill=False)
+plt.fill(cells[3].corners[0],cells[3].corners[1],fill=False)
+plt.fill(cells[4].corners[0],cells[4].corners[1],fill=False)
+plt.fill(cells[5].corners[0],cells[5].corners[1],fill=False)
+plt.fill(cells[6].corners[0],cells[6].corners[1],fill=False)
+plt.fill(cells[7].corners[0],cells[7].corners[1],fill=False)
+plt.fill(cells[8].corners[0],cells[8].corners[1],fill=False)
+plt.fill(cells[9].corners[0],cells[9].corners[1],fill=False)
+plt.fill(cells[10].corners[0],cells[10].corners[1],fill=False)
+plt.fill(cells[11].corners[0],cells[11].corners[1],fill=False)
+plt.fill(cells[12].corners[0],cells[12].corners[1],fill=False)
 plt.plot(2,2,marker='o')
 plt.plot(2,0,marker='o')
 plt.plot(-2,0,marker='o')
+plt.scatter(serviced[:,0],serviced[:,1])
 plt.show()
 
 
