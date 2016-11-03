@@ -5,6 +5,7 @@ import user
 
 r = 1.
 inner = 0.5
+power = 20e-3
 
 cells = np.array([])
 cells = np.append(cells,[hexagon.Hexagon(np.array([0.,0.]),r,1,4,0,inner)])
@@ -172,24 +173,38 @@ for i in distr:
     g = 0
     h = 0
     added = False
-    rec = 0
+    rec = 1e-7
+    signal = 0
+    signal0 = 0
     for j in cells:
         if(j.inpoly(i)):
             distancep = j.distance(i)
             if(distancep<inner):
                 users = np.append(users,[user.User(i,j.ide,j.inner_band)])
+                signal0 = power
             else:
                 users = np.append(users,[user.User(i,j.ide,j.outer_band)])
+                signal0 = 2*power
             gp = distancep**(-2.)
-            hp = 1.5*np.exp(1.5*distancep)
+            hp = 1.5*np.exp(-1.5*distancep)
+            signal = signal0*hp*gp
             serviced = np.concatenate([serviced,[i]])
-            added = True
-        else:
-            distance = j.distance(i)
-            g = distance**(-2)
-            h = 1.5*np.exp(1.5*distance)
+            for k in cells:
+                if(k != j):
+                    if(users[-1].band == k.outer_band):
+                        distance = k.distance(i)
+                        g = distance**(-2)
+                        h = 1.5*np.exp(-1.5*distance)
+                        rec += 2*power*h*g
+                    elif(users[-1].band == k.inner_band):
+                        distance = k.distance(i)
+                        g = distance**(-2)
+                        h = 1.5*np.exp(-1.5*distance)
+                        rec += power*h*g
+            SINR = np.append(SINR,[signal/rec])
 
-print(users.shape)
+print(users.shape,SINR.shape)
+np.savetxt('SINR.dat',SINR)
 
 
         
