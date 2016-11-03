@@ -10,101 +10,132 @@ cells = np.append(cells,[hexagon.Hexagon(np.array([0.,0.]),r)])
 points = np.array([[2,2],[-2,2],[0,2]])
 a=0
 
-while(a<6):
-    for k in range(points.shape[0]):
-        distance = 1e6
-        cell = np.NaN
-        for j in range(cells.shape[0]):
-            clos,dist = cells[j].closest(points[k])
 
-            temp1 = np.dot(dist[0],dist[0])
-            if(temp1<distance):
-                distance = temp1
-                cell = j
-            print(j,temp1,cells[j].origin)
-        print(cell,points[k])
+listing = np.array([[0,0],[0,0]])
 
-        if((clos[0]==0 and clos[1]==1) or (clos[1]==0 and clos[0]==1)):
-            origin = np.array([1.5*r,r*np.sin(np.pi/3.)])+cells[cell].origin
-            temp = False
-            for i in range(cells.shape[0]):
-                #
-                #print(1,cells[i].exists(origin),origin,i)
-                if(cells[i].exists(origin)):
-                    temp = True
-            if(temp == False):
-                cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
-                if(cells[-1].inpoly(points[k])):
-                    points = points
-        elif((clos[0]==2 and clos[1]==1) or (clos[0]==1 and clos[1]==2)):
-            origin = np.array([0,2*r*np.sin(np.pi/3.)])+cells[cell].origin
-            temp = False
-            for i in cells:
-                print(i.exists(origin),origin)
-                if(i.exists(origin)):
-                    temp = True
-            if(temp == False):
-                cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
-                if(cells[-1].inpoly(points[k])):
-                    points = points
-        elif((clos[0]==3 and clos[1]==2) or (clos[0]==2 and clos[1]==3)):
-            origin = np.array([-1.5*r,r*np.sin(np.pi/3.)])+cells[cell].origin
-            temp = False
-            for i in range(cells.shape[0]):
-                #
-                #print(2,cells[i].exists(origin),origin,i)
-                if(cells[i].exists(origin)):
-                    temp = True
-            if(temp == False):
-                cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
-                if(cells[-1].inpoly(points[k])):
-                    points = points
-        elif((clos[0]==4 and clos[1]==3) or (clos[0]==3 and clos[1]==4)):
-            origin = np.array([-1.5*r,-r*np.sin(np.pi/3.)])+cells[cell].origin
-            temp = False
-            for i in cells:
-                print(i.exists(origin),origin)
-                if(i.exists(origin)):
-                    temp = True
-            if(temp == False):
-                cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
-                if(cells[-1].inpoly(points[k])):
-                    points = points
-        elif((clos[0]==5 and clos[1]==4) or (clos[0]==4 and clos[1]==5)):
-            origin = np.array([0,-2*r*np.sin(np.pi/3.)])+cells[cell].origin
-            temp = False
-            for i in cells:
-                print(i.exists(origin),origin)
-                if(i.exists(origin)):
-                    temp = True
-            if(temp == False):
-                cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
-                if(cells[-1].inpoly(points[k])):
-                    points = points
-        else:
-            origin = np.array([1.5*r,-r*np.sin(np.pi/3.)])+cells[cell].origin
-            temp = False
-            for i in cells:
-                print(i.exists(origin),origin)
-                if(i.exists(origin)):
-                    temp = True
-            if(temp == False):
-                cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
-                if(cells[-1].inpoly(points[k])):
-                    points = points
-        a+=1
+doing = True
 
-print(points)
+while(doing):
+    doing = False
+    for k in points:
+        there = False
+        for p in listing:
+            if(np.array_equal(k,p)):
+                there = True
+        if(not there):
+            doing = True
+            distance = 1e6
+            cell = np.NaN
+            for j in range(cells.shape[0]):
+            
+                closed,dist = cells[j].closest(k)
 
-print(cells.shape)
+                temp1 = np.dot(dist[0],dist[0])
+                if(temp1<distance):
+                    distance = temp1
+                    cell = j
+                    clos = np.array([closed[0],closed[1]])
 
+            if((clos[0]==0 and clos[1]==1) or (clos[1]==0 and clos[0]==1)):
+                origin = np.array([1.5*r,r*np.sin(np.pi/3.)])+cells[cell].origin
+                temp = False
+                for i in range(cells.shape[0]):
+                    if(cells[i].exists(origin)):
+                        temp = True
+                if((not temp)):
+                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
+                    if(cells[-1].inpoly(k)):
+                        if(listing.ndim==2):
+                            listing = np.concatenate([listing,[k]])
+                        elif(listing.shape[0]==0):
+                            listing = k
+                        else:
+                            print('here')
+                            listing = np.concatenate([[listing],[k]])
+            elif((clos[0]==2 and clos[1]==1) or (clos[0]==1 and clos[1]==2)):
+                origin = np.array([0,2*r*np.sin(np.pi/3.)])+cells[cell].origin
+                temp = False
+                for i in cells:
+                    if(i.exists(origin)):
+                        temp = True
+                if(not temp):
+                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
+                    if(cells[-1].inpoly(k)):
+                        if(listing.ndim==2):
+                            listing = np.concatenate([listing,[k]])
+                        elif(listing.shape[0]==0):
+                            listing = k
+                        else:
+                            listing = np.concatenate([[listing],[k]])
+            elif((clos[0]==3 and clos[1]==2) or (clos[0]==2 and clos[1]==3)):
+                origin = np.array([-1.5*r,r*np.sin(np.pi/3.)])+cells[cell].origin
+                temp = False
+                for i in range(cells.shape[0]):
+                    if(cells[i].exists(origin)):
+                        temp = True
+                if(not temp):
+                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
+                    if(cells[-1].inpoly(k)):
+                        if(listing.ndim==2):
+                            listing = np.concatenate([listing,[k]])
+                        elif(listing.shape[0]==0):
+                            listing = k
+                        else:
+                            listing = np.concatenate([[listing],[k]])
+            elif((clos[0]==4 and clos[1]==3) or (clos[0]==3 and clos[1]==4)):
+                origin = np.array([-1.5*r,-r*np.sin(np.pi/3.)])+cells[cell].origin
+                temp = False
+                for i in cells:
+                    if(i.exists(origin)):
+                        temp = True
+                if(not temp):
+                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
+                    if(cells[-1].inpoly(k)):
+                        if(listing.ndim==2):
+                            listing = np.concatenate([listing,[k]])
+                        elif(listing.shape[0]==0):
+                            listing = k
+                        else:
+                            listing = np.concatenate([[listing],[k]])
+            elif((clos[0]==5 and clos[1]==4) or (clos[0]==4 and clos[1]==5)):
+                origin = np.array([0,-2*r*np.sin(np.pi/3.)])+cells[cell].origin
+                temp = False
+                for i in cells:
+                    if(i.exists(origin)):
+                        temp = True
+                if(not temp):
+                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
+                    if(cells[-1].inpoly(k)):
+                        if(listing.ndim==2):
+                            listing = np.concatenate([listing,[k]])
+                        elif(listing.shape[0]==0):
+                            listing = k
+                        else:
+                            listing = np.concatenate([[listing],[k]])
+            else:
+                origin = np.array([1.5*r,-r*np.sin(np.pi/3.)])+cells[cell].origin
+                temp = False
+                for i in cells:
+                    if(i.exists(origin)):
+                        temp = True
+                if(not temp):
+                    cells = np.concatenate([cells,[hexagon.Hexagon(origin,r)]])
+                    if(cells[-1].inpoly(k)):
+                        if(listing.ndim==2):
+                            listing = np.concatenate([listing,[k]])
+                        elif(listing.shape[0]==0):
+                            listing = k
+                        else:
+                            listing = np.concatenate([[listing],[k]])
+    a+=1
+        
 plt.plot(cells[1].corners[0],cells[1].corners[1])
 plt.plot(cells[0].corners[0],cells[0].corners[1])
 plt.plot(cells[2].corners[0],cells[2].corners[1])
 plt.plot(cells[3].corners[0],cells[3].corners[1])
 plt.plot(cells[4].corners[0],cells[4].corners[1])
 plt.plot(cells[5].corners[0],cells[5].corners[1])
-plt.plot(cells[6].corners[0],cells[6].corners[1])
+plt.plot(2,2,marker='o')
 plt.show()
 
 

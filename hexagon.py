@@ -19,6 +19,7 @@ class Hexagon:
         return polygon.contains_point(point)
 
     def closest(self,point):
+        #print(point)
         temp = (point[0]-self.corners[0])**2+(point[1]-self.corners[1])**2
         #print("distance",(point[1]-self.corners[1])**2+(point[0]-self.corners[0])**2)
         index = temp.argsort()
