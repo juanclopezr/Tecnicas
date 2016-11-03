@@ -60,6 +60,8 @@ while(doing):
                     for c in points:
                         if(cells[-1].inpoly(c)):
                             listing = np.concatenate([listing,[c]])
+                else:
+                    listing = np.concatenate([listing,[k]])
             elif((clos[0]==2 and clos[1]==1) or (clos[0]==1 and clos[1]==2)):
                 origin = np.array([0,2*r*np.sin(np.pi/3.)])+cells[cell].origin
                 temp = False
@@ -79,6 +81,8 @@ while(doing):
                     for c in points:
                         if(cells[-1].inpoly(c)):
                             listing = np.concatenate([listing,[c]])
+                else:
+                    listing = np.concatenate([listing,[k]])
             elif((clos[0]==3 and clos[1]==2) or (clos[0]==2 and clos[1]==3)):
                 origin = np.array([-1.5*r,r*np.sin(np.pi/3.)])+cells[cell].origin
                 temp = False
@@ -98,6 +102,8 @@ while(doing):
                     for c in points:
                         if(cells[-1].inpoly(c)):
                             listing = np.concatenate([listing,[c]])
+                else:
+                    listing = np.concatenate([listing,[k]])
             elif((clos[0]==4 and clos[1]==3) or (clos[0]==3 and clos[1]==4)):
                 origin = np.array([-1.5*r,-r*np.sin(np.pi/3.)])+cells[cell].origin
                 temp = False
@@ -117,6 +123,8 @@ while(doing):
                     for c in points:
                         if(cells[-1].inpoly(c)):
                             listing = np.concatenate([listing,[c]])
+                else:
+                    listing = np.concatenate([listing,[k]])
             elif((clos[0]==5 and clos[1]==4) or (clos[0]==4 and clos[1]==5)):
                 origin = np.array([0,-2*r*np.sin(np.pi/3.)])+cells[cell].origin
                 temp = False
@@ -136,6 +144,8 @@ while(doing):
                     for c in points:
                         if(cells[-1].inpoly(c)):
                             listing = np.concatenate([listing,[c]])
+                else:
+                    listing = np.concatenate([listing,[k]])
             else:
                 origin = np.array([1.5*r,-r*np.sin(np.pi/3.)])+cells[cell].origin
                 temp = False
@@ -155,6 +165,8 @@ while(doing):
                     for c in points:
                         if(cells[-1].inpoly(c)):
                             listing = np.concatenate([listing,[c]])
+                else:
+                    listing = np.concatenate([listing,[k]])
         print(index,cells[-1].origin,k,listing)
 
 print(cells.shape)
@@ -184,7 +196,7 @@ for i in distr:
                 signal0 = power
             else:
                 users = np.append(users,[user.User(i,j.ide,j.outer_band)])
-                signal0 = 2*power
+                signal0 = power
             gp = distancep**(-2.)
             hp = 1.5*np.exp(-1.5*distancep)
             signal = signal0*hp*gp
@@ -195,7 +207,7 @@ for i in distr:
                         distance = k.distance(i)
                         g = distance**(-2)
                         h = 1.5*np.exp(-1.5*distance)
-                        rec += 2*power*h*g
+                        rec += power*h*g
                     elif(users[-1].band == k.inner_band):
                         distance = k.distance(i)
                         g = distance**(-2)
