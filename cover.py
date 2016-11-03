@@ -8,7 +8,7 @@ inner = 0.5
 cells = np.array([])
 cells = np.append(cells,[hexagon.Hexagon(np.array([0.,0.]),r,1,4,0,inner)])
 
-points = np.array([[2,2],[0,2],[-2,2],[-2,0],[-2,-2],[0,-2],[2,-2]])
+points = np.array([[2,2],[0,2],[-2,2],[-2,0],[-2,-2],[0,-2],[2,-2],[2.1,0]])
 index = 1
 
 
@@ -153,7 +153,7 @@ while(doing):
                     for c in points:
                         if(cells[-1].inpoly(c)):
                             listing = np.concatenate([listing,[c]])
-    print(index,cells[-1].origin,k,listing)
+        print(index,cells[-1].origin,k,listing)
 
 print(cells.shape)
 
@@ -165,7 +165,13 @@ plt.plot(cells[2].corners[0],cells[2].corners[1])
 plt.plot(cells[3].corners[0],cells[3].corners[1])
 plt.plot(cells[4].corners[0],cells[4].corners[1])
 plt.plot(cells[5].corners[0],cells[5].corners[1])
+plt.plot(cells[6].corners[0],cells[6].corners[1])
+plt.plot(cells[7].corners[0],cells[7].corners[1])
+plt.plot(cells[8].corners[0],cells[8].corners[1])
+plt.plot(cells[9].corners[0],cells[9].corners[1])
 plt.plot(2,2,marker='o')
+plt.plot(2,0,marker='o')
+plt.plot(-2,0,marker='o')
 plt.show()
 
 
