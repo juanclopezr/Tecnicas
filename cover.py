@@ -225,7 +225,7 @@ for i in distr:
                 signal0 = power
             else:
                 users = np.append(users,[user.User(i,j.ide,j.outer_band[0])])
-                signal0 = power
+                signal0 = 2*power
             gp = distancep**(-2.)
             hp = 1.5*np.exp(-1.5*distancep)
             signal = signal0*hp*gp
