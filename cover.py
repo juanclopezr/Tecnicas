@@ -244,7 +244,7 @@ for i in distr:
                         rec += power*h*g
             SINR = np.append(SINR,[signal/rec])
 
-print(users.shape,SINR.shape)
+print(users.shape,SINR.shape,sys.argv[3])
 np.savetxt(sys.argv[3],SINR)
 
 
