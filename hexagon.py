@@ -29,3 +29,16 @@ class Hexagon:
         index = temp.argsort()
         #return cor[:,][index]
         return index,temp[index]
+
+    def inreg(self,point):
+        #print(self.corners[:,:3],self.origin)
+        polygon1 = myp.Path(np.concatenate([self.corners[:,:3].T,[self.origin]]))
+        polygon2 = myp.Path(np.concatenate([self.corners[:,2:5].T,[self.origin]]))
+        if(self.distance(point)<=self.inner_radius):
+            return 4
+        elif(polygon1.contains_point(point)):
+            return 1
+        elif(polygon2.contains_point(point)):
+            return 2
+        else:
+            return 3

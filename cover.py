@@ -196,7 +196,8 @@ for i in distr:
                 users = np.append(users,[user.User(i,j.ide,j.inner_band)])
                 signal0 = power
             else:
-                users = np.append(users,[user.User(i,j.ide,j.outer_band)])
+                band = j.inreg(i)
+                users = np.append(users,[user.User(i,j.ide,band)])
                 signal0 = power
             gp = distancep**(-2.)
             hp = 1.5*np.exp(-1.5*distancep)
@@ -204,6 +205,11 @@ for i in distr:
             serviced = np.concatenate([serviced,[i]])
             for k in cells:
                 if(k != j):
+                    distance = k.distance(i)
+                    g = distance**(-2)
+                    h = 1.5*np.exp(-1.5*distance)
+                    rec += power*h*g
+                    """
                     if(users[-1].band == k.outer_band):
                         distance = k.distance(i)
                         g = distance**(-2)
@@ -213,7 +219,7 @@ for i in distr:
                         distance = k.distance(i)
                         g = distance**(-2)
                         h = 1.5*np.exp(-1.5*distance)
-                        rec += power*h*g
+                        rec += power*h*g"""
             SINR = np.append(SINR,[signal/rec])
 
 print(users.shape,SINR.shape)
