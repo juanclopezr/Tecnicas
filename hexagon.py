@@ -8,7 +8,7 @@ class Hexagon:
         self.corners[0] = self.corners[0]+origin[0]
         self.corners[1] = self.corners[1]+origin[1]
         self.outer_band = outer_band
-        self.inner_band = inner_bands
+        self.inner_bands = inner_bands
         self.inner_radius = inner_radius
         self.ide = ide
 

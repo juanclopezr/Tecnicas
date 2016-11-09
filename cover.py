@@ -6,10 +6,10 @@ import sys
 
 r = float(sys.argv[1])
 inner = float(sys.argv[2])
-power = 80e-4
+power = 40e-4
 
 cells = np.array([])
-cells = np.append(cells,[hexagon.Hexagon(np.array([0.,0.]),r,1,4,0,inner)])
+cells = np.append(cells,[hexagon.Hexagon(np.array([0.,0.]),r,[1],[2,3],0,inner)])
 
 points = np.array([[2,2],[1.5,2],[1,2],[0.5,2],[0,2],[-0.5,2],[-1,2],[-1.5,2],[-2,2],[-2.2,1.3],[-2.1,0],[-2,-0.7],[-2,-2],[0,-2],[2,-2],[2,-0.1],[2.1,0]])
 index = 1
@@ -49,16 +49,16 @@ while(doing):
                     if(cells[i].exists(origin)):
                         temp = True
                 if((not temp)):
-                    outer_band = 0
+                    outer_band = [0]
                     inner_bands = [0,0]
-                    if(cells[cell].outer_band==1):
-                        outer_band = 2
+                    if(cells[cell].outer_band[0]==1):
+                        outer_band = [2]
                         inner_bands = [1,3]
-                    elif(cells[cell].outer_band==2):
-                        outer_band = 3
+                    elif(cells[cell].outer_band[0]==2):
+                        outer_band = [3]
                         inner_bands = [1,2]
                     else:
-                        outer_band = 1
+                        outer_band = [1]
                         inner_bands = [2,3]
                     cells = np.concatenate([cells,[hexagon.Hexagon(origin,r,outer_band,inner_bands,index,inner)]])
                     index += 1
@@ -74,16 +74,16 @@ while(doing):
                     if(i.exists(origin)):
                         temp = True
                 if(not temp):
-                    outer_band = 0
+                    outer_band = [0]
                     inner_bands = [0,0]
-                    if(cells[cell].outer_band==1):
-                        outer_band = 3
+                    if(cells[cell].outer_band[0]==1):
+                        outer_band = [3]
                         inner_bands = [1,2]
-                    elif(cells[cell].outer_band==2):
-                        outer_band = 1
+                    elif(cells[cell].outer_band[0]==2):
+                        outer_band = [1]
                         inner_bands = [2,3]
                     else:
-                        outer_band = 2
+                        outer_band = [2]
                         inner_bands = [1,3]
                     cells = np.concatenate([cells,[hexagon.Hexagon(origin,r,outer_band,inner_bands,index,inner)]])
                     index += 1
@@ -99,16 +99,16 @@ while(doing):
                     if(cells[i].exists(origin)):
                         temp = True
                 if(not temp):
-                    outer_band = 0
+                    outer_band = [0]
                     inner_bands = [0,0]
-                    if(cells[cell].outer_band==1):
-                        outer_band = 2
+                    if(cells[cell].outer_band[0]==1):
+                        outer_band = [2]
                         inner_bands = [1,3]
-                    elif(cells[cell].outer_band==2):
-                        outer_band = 3
+                    elif(cells[cell].outer_band[0]==2):
+                        outer_band = [3]
                         inner_bands = [1,2]
                     else:
-                        outer_band = 1
+                        outer_band = [1]
                         inner_bands = [2,3]
                     cells = np.concatenate([cells,[hexagon.Hexagon(origin,r,outer_band,inner_bands,index,inner)]])
                     index += 1
@@ -124,16 +124,16 @@ while(doing):
                     if(i.exists(origin)):
                         temp = True
                 if(not temp):
-                    outer_band = 0
+                    outer_band = [0]
                     inner_bands = [0,0]
-                    if(cells[cell].outer_band==1):
-                        outer_band = 3
+                    if(cells[cell].outer_band[0]==1):
+                        outer_band = [3]
                         inner_bands = [1,2]
-                    elif(cells[cell].outer_band==2):
-                        outer_band = 1
+                    elif(cells[cell].outer_band[0]==2):
+                        outer_band = [1]
                         inner_bands = [2,3]
                     else:
-                        outer_band = 2
+                        outer_band = [2]
                         inner_bands = [1,3]
                     cells = np.concatenate([cells,[hexagon.Hexagon(origin,r,outer_band,inner_bands,index,inner)]])
                     index += 1
@@ -149,16 +149,16 @@ while(doing):
                     if(i.exists(origin)):
                         temp = True
                 if(not temp):
-                    outer_band = 0
+                    outer_band = [0]
                     inner_bands = [0,0]
-                    if(cells[cell].outer_band==1):
-                        outer_band = 2
+                    if(cells[cell].outer_band[0]==1):
+                        outer_band = [2]
                         inner_bands = [1,3]
-                    elif(cells[cell].outer_band==2):
-                        outer_band = 3
+                    elif(cells[cell].outer_band[0]==2):
+                        outer_band = [3]
                         inner_bands = [1,2]
                     else:
-                        outer_band = 1
+                        outer_band = [1]
                         inner_bands = [2,3]
                     cells = np.concatenate([cells,[hexagon.Hexagon(origin,r,outer_band,inner_bands,index,inner)]])
                     index += 1
@@ -174,16 +174,16 @@ while(doing):
                     if(i.exists(origin)):
                         temp = True
                 if(not temp):
-                    outer_band = 0
+                    outer_band = [0]
                     inner_bands = [0,0]
-                    if(cells[cell].outer_band==1):
-                        outer_band = 3
+                    if(cells[cell].outer_band[0]==1):
+                        outer_band = [3]
                         inner_bands = [1,2]
-                    elif(cells[cell].outer_band==2):
-                        outer_band = 1
+                    elif(cells[cell].outer_band[0]==2):
+                        outer_band = [1]
                         inner_bands = [2,3]
                     else:
-                        outer_band = 2
+                        outer_band = [2]
                         inner_bands = [1,3]
                     cells = np.concatenate([cells,[hexagon.Hexagon(origin,r,outer_band,inner_bands,index,inner)]])
                     index += 1
@@ -217,10 +217,14 @@ for i in distr:
         if(j.inpoly(i)):
             distancep = j.distance(i)
             if(distancep<inner):
-                users = np.append(users,[user.User(i,j.ide,j.inner_bands)])
+                ra = np.random.random()
+                if(ra<=0.5):
+                    users = np.append(users,[user.User(i,j.ide,j.inner_bands[0])])
+                else:
+                    users = np.append(users,[user.User(i,j.ide,j.inner_bands[1])])
                 signal0 = power
             else:
-                users = np.append(users,[user.User(i,j.ide,j.outer_band)])
+                users = np.append(users,[user.User(i,j.ide,j.outer_band[0])])
                 signal0 = power
             gp = distancep**(-2.)
             hp = 1.5*np.exp(-1.5*distancep)
@@ -228,12 +232,12 @@ for i in distr:
             serviced = np.concatenate([serviced,[i]])
             for k in cells:
                 if(k != j):
-                    if(users[-1].band == k.outer_band):
+                    if(users[-1].band == k.outer_band[0]):
                         distance = k.distance(i)
                         g = distance**(-2)
                         h = 1.5*np.exp(-1.5*distance)
-                        rec += power*h*g
-                    elif(users[-1].band == k.inner_band):
+                        rec += 2*power*h*g
+                    elif(users[-1].band in k.inner_bands):
                         distance = k.distance(i)
                         g = distance**(-2)
                         h = 1.5*np.exp(-1.5*distance)
