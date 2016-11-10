@@ -10,7 +10,8 @@ for j in range(100):
     for i in range(inner.shape[0]):
         os.system('python cover.py 1. %f SINR%05d' % (inner[i],i))
         data = np.loadtxt('SINR%05d' % (i))
-        SINR[i] = np.dot(data,data)**0.5/data.shape[0]
+        #SINR[i] = np.dot(data,data)**0.5/data.shape[0]
+        SINR[i] = data.mean()
     avg = avg + SINR/100.
 
 plt.plot(inner,10*np.log10(SINR))

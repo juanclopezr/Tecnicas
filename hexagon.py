@@ -32,7 +32,10 @@ class Hexagon:
 
     def inreg(self,point):
         #print(self.corners[:,:3],self.origin)
+        #La funcion concatenate se usa para añadir el origen a la lista de esquinas por region.
+        #Esquinas 0, 1 y 2 para el poligono 1
         polygon1 = myp.Path(np.concatenate([self.corners[:,:3].T,[self.origin]]))
+        #Esquinas 2, 3 y 4 para el poligono 2
         polygon2 = myp.Path(np.concatenate([self.corners[:,2:5].T,[self.origin]]))
         if(self.distance(point)<=self.inner_radius):
             return 4

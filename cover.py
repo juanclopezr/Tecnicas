@@ -205,24 +205,51 @@ for i in distr:
             serviced = np.concatenate([serviced,[i]])
             for k in cells:
                 if(k != j):
-                    distance = k.distance(i)
-                    g = distance**(-2)
-                    h = 1.5*np.exp(-1.5*distance)
-                    rec += power*h*g
                     """
-                    if(users[-1].band == k.outer_band):
+                    Se resta al punto i donde hay un usuario, el centro de la celda k, con el fin de obtener un vector con orientación
+                    """
+                    rela = i - k.origin
+                    #El último usuario agregado es el -1
+                    if(users[-1].band == 1):
+                        #Se chequea que la posicion y del usuario sea positiva respecto a la celda
+                        if(rela[1]>=0):
+                            #Se chequea que el ángulo de la orientación esté en la region 1
+                            if((rela[1]/rela[0] <= -np.tan(np.pi/3.)) or (rela[0] >= 0.)):
+                                #Calculos usuales de interferencia
+                                distance = k.distance(i)
+                                g = distance**(-2)
+                                h = 1.5*np.exp(-1.5*distance)
+                                rec += power*h*g
+                                #print('jolly')
+                    elif(users[-1].band == 2):
+                        #La idea es la misma, pero para la siguiente region
+                        rela = i - k.origin
+                        if(rela[0]<=0):
+                            if((rela[1]/rela[0] >= -np.tan(np.pi/3.)) and (rela[1]/rela[0] <= np.tan(np.pi/3.))):
+                                distance = k.distance(i)
+                                g = distance**(-2)
+                                h = 1.5*np.exp(-1.5*distance)
+                                rec += power*h*g
+                                #print('jolly')
+                    elif(users[-1].band == 3):
+                        #Misma idea
+                        if(rela[1]<=0):
+                            if((rela[1]/rela[0] <= np.tan(np.pi/3.)) or (rela[0] >= 0.)):
+                                distance = k.distance(i)
+                                g = distance**(-2)
+                                h = 1.5*np.exp(-1.5*distance)
+                                rec += power*h*g
+                                #print('jello')
+                    elif(users[-1].band == k.inner_band):
+                        #Se chequea si el usuario esta la region interior de la celda
                         distance = k.distance(i)
                         g = distance**(-2)
                         h = 1.5*np.exp(-1.5*distance)
                         rec += power*h*g
-                    elif(users[-1].band == k.inner_band):
-                        distance = k.distance(i)
-                        g = distance**(-2)
-                        h = 1.5*np.exp(-1.5*distance)
-                        rec += power*h*g"""
+                        #print('jill')
             SINR = np.append(SINR,[signal/rec])
 
-print(users.shape,SINR.shape)
+print(users.shape,SINR.shape,sys.argv[3])
 np.savetxt(sys.argv[3],SINR)
 
 
